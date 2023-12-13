@@ -21,6 +21,8 @@ $ npm install
 
 ## Running the app
 
+1. Create .env file in root directory
+
 ```bash
 # development
 $ npm run start
