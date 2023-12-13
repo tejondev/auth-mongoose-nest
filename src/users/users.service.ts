@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -48,8 +49,6 @@ export class UsersService {
 
   // UPDATE ==============================================================
   async update(id: string, updateUserDto: UpdateUserDto) {
-    if (!isValidObjectId(id)) throw new BadRequestException(`Invalid ID`);
-
     // Find user
     const user = await this.findOne(id);
 
@@ -68,8 +67,6 @@ export class UsersService {
 
   // REMOVE ==============================================================
   async remove(id: string) {
-    if (!isValidObjectId(id)) throw new BadRequestException(`Invalid ID`);
-
     const { deletedCount } = await this.userModel.deleteOne({ _id: id });
 
     if (deletedCount === 0) {
@@ -81,8 +78,10 @@ export class UsersService {
   private handleExceptions(error: any) {
     if (error.code === 11000) {
       throw new BadRequestException(
-        `Value already exists ==> ${JSON.stringify(error.keyValue)}`,
+        `Value already exists ${JSON.stringify(error.keyValue)}`,
       );
     }
+
+    throw new InternalServerErrorException(error);
   }
 }
