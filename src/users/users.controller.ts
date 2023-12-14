@@ -1,14 +1,5 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
@@ -16,10 +7,12 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
+  // Create and delete users are handled by the auth module
+  // Change password is handled by the auth module
+  // @Post()
+  // create(@Body() createUserDto: CreateUserDto) {
+  //   return this.usersService.create(createUserDto);
+  // }
 
   @Get()
   findAll() {
@@ -37,10 +30,5 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.usersService.update(id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id', ParseMongoIdPipe) id: string) {
-    return this.usersService.remove(id);
   }
 }

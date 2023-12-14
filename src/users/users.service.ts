@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
 import { Model, isValidObjectId } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,7 +18,16 @@ export class UsersService {
   // CREATE =============================================================
   async create(createUserDto: CreateUserDto) {
     try {
-      return await this.userModel.create(createUserDto);
+      const { password, ...userData } = createUserDto;
+
+      let user = await this.userModel.create({
+        ...userData,
+        password: bcrypt.hashSync(password, 10),
+      });
+
+      user = user.toObject();
+      delete user.password;
+      return user;
     } catch (error) {
       this.handleExceptions(error);
     }
@@ -63,15 +73,6 @@ export class UsersService {
       ...user.toJSON(),
       ...updateUserDto,
     };
-  }
-
-  // REMOVE ==============================================================
-  async remove(id: string) {
-    const { deletedCount } = await this.userModel.deleteOne({ _id: id });
-
-    if (deletedCount === 0) {
-      throw new NotFoundException(`User "${id}" not found`);
-    }
   }
 
   // ERRORS ==============================================================

@@ -1,16 +1,7 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsString, Matches, MinLength } from 'class-validator';
+import { Matches } from 'class-validator';
 
-export class CreateUserDto {
-  @Transform(({ value }) => value.trim())
-  @IsString()
-  @MinLength(3)
-  fullname: string;
-
-  @Transform(({ value }) => value.trim().toLowerCase())
-  @IsEmail()
-  email: string;
-
+export class ChangePasswordDto {
   @Transform(({ value }) => value.trim())
   @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message:
