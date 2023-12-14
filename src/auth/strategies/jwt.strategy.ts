@@ -8,6 +8,14 @@ import { JwtPayload } from '../interfaces/jwt-payload.interface';
 
 @Injectable()
 export class JwtStragey extends PassportStrategy(Strategy) {
+  // ======================================================
+  // 1. Default, first validates the token with the secret
+  // ======================================================
+
+  // 2. Other validations can be added here ===============
+
+  // Add userId to the request object
+
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<User>,
@@ -18,20 +26,12 @@ export class JwtStragey extends PassportStrategy(Strategy) {
     });
   }
 
-  // ======================================================
-  // 1. Default, first validates the token with the secret
-  // ======================================================
-
-  // 2. Other validations can be added here ===============
-
-  // Add userId to the request object
   async validate(payload: JwtPayload): Promise<string> {
     const { id } = payload;
 
     const user = await this.userModel.findOne({ _id: id });
-    if (!user) throw new UnauthorizedException();
+    if (!user) throw new UnauthorizedException('Token not valid');
 
-    console.log(user._id);
-    return user._id;
+    return user._id.toString();
   }
 }
