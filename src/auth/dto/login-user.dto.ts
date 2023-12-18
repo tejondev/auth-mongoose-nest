@@ -1,19 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsEmail, Matches } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
-export class LoginUserDto {
-  @IsEmail()
-  @Transform(({ value }) => value.trim().toLowerCase())
-  email: string;
-
-  @ApiProperty({
-    description:
-      'Password requires 6 characters, includes; 1 uppercase letter, 1 lowercase letter, and 1 number',
-  })
-  @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message:
-      'Password requires 6 characters, includes; 1 uppercase letter, 1 lowercase letter, and 1 number',
-  })
-  password: string;
-}
+export class LoginUserDto extends PickType(CreateUserDto, [
+  'email',
+  'password',
+] as const) {}
