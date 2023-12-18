@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
