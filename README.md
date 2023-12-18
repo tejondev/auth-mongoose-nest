@@ -6,9 +6,6 @@
 
 Base Auth app with Mongoose, JWT, Passport, GlobalPipes
 
-- Password can't update with User update
-- Password can't get with User or Users get
-
 ## Add more properties
 
 Edit entity for add more properties
@@ -21,28 +18,13 @@ $ npm install
 
 ## Running the app
 
-1. Create .env file in root directory
+1. Create **.env** file in root directory and view **.env.template** for more details
+2. Excute commands in terminal
 
 ```bash
-# development
-$ npm run start
-
 # watch mode
 $ npm run start:dev
 
 # production mode
 $ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
