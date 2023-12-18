@@ -14,7 +14,8 @@ export class SameUserChangesGuard implements CanActivate {
     // Extract the user info from the request object
     const { user, params } = context.switchToHttp().getRequest();
 
-    if (user !== params.id) throw new UnauthorizedException();
+    if (user.userId !== params.id)
+      throw new UnauthorizedException("You can't change other user's data");
 
     return true;
   }

@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -48,7 +49,7 @@ export class AuthController {
 
   @Get('test/:id')
   @UseGuards(AuthGuard(), SameUserChangesGuard)
-  test(@Param('id') id: string) {
-    return { test: 'test', id };
+  test(@Param('id') id: string, @Req() req: Express.Request) {
+    return { test: 'test', id, userReqInfo: req.user };
   }
 }
