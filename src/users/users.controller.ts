@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SameUserChangesGuard } from 'src/common/guards/same-user-changes.guard';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -28,6 +28,7 @@ export class UsersController {
     return this.usersService.findOne(idOrEmail);
   }
 
+  @ApiBearerAuth()
   @Patch(':id')
   @UseGuards(AuthGuard(), SameUserChangesGuard)
   update(

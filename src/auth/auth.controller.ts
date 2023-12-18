@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { SameUserChangesGuard } from '../common/guards/same-user-changes.guard';
@@ -32,6 +32,7 @@ export class AuthController {
     return this.authService.login(loginUserDto);
   }
 
+  @ApiBearerAuth()
   @Post('change-password/:id')
   @UseGuards(AuthGuard(), SameUserChangesGuard)
   changePassword(
@@ -41,12 +42,14 @@ export class AuthController {
     return this.authService.changePassword(id, password);
   }
 
+  @ApiBearerAuth()
   @Delete('delete-user/:id')
   @UseGuards(AuthGuard(), SameUserChangesGuard)
   deleteAccount(@Param('id', ParseMongoIdPipe) id: string) {
     return this.authService.deleteAccount(id);
   }
 
+  @ApiBearerAuth()
   @Get('test/:id')
   @UseGuards(AuthGuard(), SameUserChangesGuard)
   test(@Param('id') id: string, @Req() req: Express.Request) {
